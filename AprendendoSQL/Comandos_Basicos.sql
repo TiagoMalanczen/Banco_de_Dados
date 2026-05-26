@@ -32,7 +32,7 @@ DESC PROJETO;
 -- =========================================================================
 INSERT INTO DEV(NOME, LINGUAGEM)
 VALUES  ("Tiago Silva", "PHP"),
-        ("Marcos Santos", "Java");
+        ("Marcos Santos", "Java"),
         ("Yágo Santos", "C#");
 INSERT INTO DEV(NOME)
 VALUES  ("Aline Souza");
