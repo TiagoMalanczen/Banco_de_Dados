@@ -28,6 +28,15 @@ DESC DEV;
 DESC PROJETO;
 
 -- =========================================================================
+-- BLOCO 2.1: ALTERAÇÕES DE ESTRUTURA (DDL - ALTER)
+-- =========================================================================
+ALTER TABLE DEV ADD COLUMN EMAIL VARCHAR(150) AFTER NOME;
+ALTER TABLE PROJETO MODIFY COLUMN NOME_PROJETO VARCHAR(200) NOT NULL; 
+ALTER TABLE PROJETO CHANGE COLUMN ORCAMENTO VALOR_ORCAMENTO DECIMAL(10,2) NOT NULL;
+ALTER TABLE PROJETO ADD COLUMN TESTE INT;
+ALTER TABLE PROJETO DROP COLUMN TESTE;
+
+-- =========================================================================
 -- BLOCO 3: MANIPULAÇÃO E POVOAMENTO DE DADOS (DML)
 -- =========================================================================
 INSERT INTO DEV(NOME, LINGUAGEM)
