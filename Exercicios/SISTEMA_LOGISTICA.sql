@@ -24,3 +24,15 @@ SHOW TABLES;
 DESC ENTREGA;
 DESC VEICULO;
 
+INSERT INTO VEICULO(MODELO, PLACA)
+VALUES  ("Fiorino", "AAA-1111"),
+        ("Caminhão Cargo", "BBB-2222");
+
+INSERT INTO ENTREGA(CIDADE_DESTINO, STATUS_ENTREGA, VALOR_FRETE, DATA_ENVIO, ID_VEICULO)
+VALUES  ("Ponta Grossa","Entregue", 150.00, '2026-05-10', 1),
+        ("Curitiba", "Em Transito", 450.00, '2026-05-20', 2.),
+        ("Ponta Grossa", "Pendente",120.00, NULL, 1),
+        ("Londrina", "Entregue", 600.00,'2026-05-25', 2);
+
+SELECT *FROM VEICULO;
+SELECT *FROM ENTREGA;
