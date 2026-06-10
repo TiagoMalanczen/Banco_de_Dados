@@ -27,7 +27,7 @@ SHOW TABLES;
 DESC DEV;
 DESC PROJETO;
 
--- ================================     =========================================
+-- =========================================================================
 -- BLOCO 2.1: ALTERAÇÕES DE ESTRUTURA (DDL - ALTER)
 -- =========================================================================
 ALTER TABLE DEV ADD COLUMN EMAIL VARCHAR(150) AFTER NOME;
@@ -115,4 +115,4 @@ FROM PROJETO;
 
 SELECT ID_DEV, MIN(VALOR_ORCAMENTO)
 FROM PROJETO
-GROUP BY ID_DEV;
+GROUP BY ID_DEV;    
