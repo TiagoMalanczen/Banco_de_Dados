@@ -75,7 +75,6 @@ CREATE TABLE FUNCIONARIO (
         REFERENCES DEPARTAMENTO(ID_DEPARTAMENTO) ON UPDATE RESTRICT ON DELETE RESTRICT
 );
 
--- 8. Tabela EVENTO
 CREATE TABLE EVENTO (
     ID_EVENTO INT AUTO_INCREMENT,
     NOME VARCHAR(150) NOT NULL,
@@ -104,6 +103,62 @@ CREATE TABLE ALOCACAO (
         REFERENCES FUNCIONARIO(ID_FUNCIONARIO) ON UPDATE RESTRICT ON DELETE RESTRICT
 );
 
+INSERT INTO DEPARTAMENTO (NOME, SIGLA) VALUES 
+('Departamento Acadêmico de Informática', 'DAINF'),
+('Departamento Acadêmico de Produção', 'DAPRO'),
+('Departamento Acadêmico de Eletrônica', 'DAELN'),
+('Departamento Acadêmico de Mecânica', 'DAMEC'),
+('Departamento Vazio de Testes', 'DVT');
 
-SHOW TABLES;
+INSERT INTO CURSO (NOME, SIGLA, CARGA_HORARIA, ID_DEPARTAMENTO) VALUES 
+('Análise e Desenvolvimento de Sistemas', 'ADS', 2400, 1),
+('Engenharia de Computação', 'EC', 4000, 1),
+('Engenharia de Produção', 'EPR', 3800, 2),
+('Engenharia Eletrônica', 'EE', 4200, 3),
+('Engenharia Mecânica', 'EM', 4100, 4);
+
+INSERT INTO EQUIPAMENTO (NOME, QUANT_EXISTENTE) VALUES 
+('Projetor Dell 4K', 15),
+('Computador i7 16GB', 40),
+('Osciloscópio Digital', 10),
+('Ar Condicionado 18000 BTUs', 20),
+('Microfone Sem Fio', 5);
+
+INSERT INTO SALA (SIGLA, TIPO_SALA, CAPACIDADE, ID_DEPARTAMENTO) VALUES 
+('L301', 'Laboratório', 40, 1),
+('A102', 'Auditório', 120, 1),
+('T101', 'Teórica', 50, 2),
+('G204', 'Gabinete Professor', 2, 3),
+('SALA_VAZIA', 'Teórica', 30, 4);
+
+INSERT INTO SALAEQUIPAMENTO (ID_SALA, ID_EQUIPAMENTO, QUANT_ALOCADA) VALUES 
+(1, 2, 35), 
+(1, 4, 2),  
+(2, 1, 1),  
+(2, 5, 2),  
+(3, 4, 1);  
+
+INSERT INTO ENDERECO (UF, CIDADE, BAIRRO, RUA, CEP) VALUES 
+('PR', 'Curitiba', 'Centro', 'Avenida Sete de Setembro, 3165', '80230-010'),
+('PR', 'Curitiba', 'Água Verde', 'Rua Chile, 1200', '80215-100'),
+('PR', 'Londrina', 'Centro', 'Rua Piauí, 450', '86020-320'),
+('SC', 'Joinville', 'América', 'Rua Blumenau, 800', '89204-250'),
+('SP', 'São Paulo', 'Morumbi', 'Avenida Giovanni Gronchi, 1500', '05651-002');
+
+INSERT INTO FUNCIONARIO (NOME, CPF, EMAIL, DATA_ADMISSAO, DATA_DEMISSAO, SALARIO, ID_ENDERECO, ID_DEPARTAMENTO) VALUES 
+('Lucas Alves Pedroso', '111.111.111-11', 'lucas@utfpr.edu.br', '2021-04-15', NULL, 6500.00, 1, 1),
+('Ana Silva', '222.222.222-22', 'anasilva@utfpr.edu.br', '2018-02-10', NULL, 12500.00, 2, 1),
+('Carlos Souza', '333.333.333-33', 'carlos@utfpr.edu.br', '2019-06-20', '2025-05-10', 5200.00, 3, 2),
+('Bruno Lima', '444.444.444-44', 'brunolima@utfpr.edu.br', '2026-01-10', NULL, 4800.00, 1, 2),
+('Mariana Costa', '555.555.555-55', 'mariana@utfpr.edu.br', '1995-03-01', NULL, 15000.00, 4, 3);
+
+INSERT INTO EVENTO (NOME, DESCRICAO, SIGLA) VALUES 
+('Semana Acadêmica de Tecnologia', 'Palestras e minicursos de TI', 'SECOMP'),
+('Simpósio de Engenharia de Produção', 'Debates sobre logística moderna', 'SIMEP'),
+('Aulas Regulares de Algoritmos', 'Aulas diárias do curso de ADS', 'ALGO1');
+
+INSERT INTO ALOCACAO (ID_EVENTO, ID_SALA, ID_FUNCIONARIO, DATA_ALOCACAO, DATA_INICIO_RESERVA, DATA_TERMINO_RESERVA, HORA_INICIO_RESERVA, HORA_TERMINO_RESERVA, DIA_SEMANA) VALUES 
+(1, 2, 1, '2022-04-01', '2022-04-10', '2022-04-15', '08:00:00', '12:00:00', 'Segunda'), 
+(3, 1, 2, '2026-06-01', '2026-02-01', '2026-12-10', '19:00:00', '22:30:00', 'Terça');
+
 
