@@ -45,7 +45,7 @@ VALUES  ("Tiago Silva", "PHP"),
 INSERT INTO DEV(NOME)
 VALUES  ("Aline Souza");
 
-INSERT INTO PROJETO(NOME_PROJETO, ORCAMENTO, ID_DEV)
+INSERT INTO PROJETO(NOME_PROJETO, VALOR_ORCAMENTO, ID_DEV)
 VALUES  ("Sistemas E-commerce", 1500.00, 1),
         ("App Mobile", 8500.00, 2);
 
@@ -115,4 +115,100 @@ FROM PROJETO;
 
 SELECT ID_DEV, MIN(VALOR_ORCAMENTO)
 FROM PROJETO
-GROUP BY ID_DEV;    
+GROUP BY ID_DEV;   
+
+-- =========================================================================
+-- BLOCO 4: PROCEDURES E TRIGGERS 
+-- =========================================================================
+
+DELIMITER //
+CREATE PROCEDURE BuscarNomeDev (IN p_id_dev INT)
+BEGIN
+    DECLARE v_nome_dev VARCHAR(100);
+    
+    SELECT NOME INTO v_nome_dev 
+    FROM DEV 
+    WHERE ID_DEV = p_id_dev;
+    
+    SELECT CONCAT("O desenvolvedor selecionado foi: ", v_nome_dev) AS Resultado;
+END //
+DELIMITER ;
+CALL BuscarNomeDev(1);
+
+
+DELIMITER //
+CREATE PROCEDURE VerificaOrcamentoProjeto (IN p_id_projeto INT)
+BEGIN 
+    DECLARE v_orcamento DECIMAL(10,2);
+
+    SELECT VALOR_ORCAMENTO INTO v_orcamento
+    FROM PROJETO
+    WHERE ID_PROJETO = p_id_projeto;
+
+    IF v_orcamento > 5000.00 THEN
+        SELECT "Este é um projeto de grande porte " AS CLASSIFICACAO;
+    ELSE
+        SELECT "Este é um projeto de baixo porte" AS CLASSIFICACAO;
+    END IF;
+
+END //
+DELIMITER;
+
+CALL VerificaOrcamentoProjeto(2);
+
+
+DELIMITER //
+    CREATE PROCEDURE VincularDevProjeto(
+        IN p_nome_projeto VARCHAR(200),
+        IN p_valor DECIMAL(10,2),
+        IN p_id_dev INT
+    )
+BEGIN   
+    DECLARE v_linguagem VARCHAR(200);
+
+    SELECT LINGUAGEM INTO v_linguagem
+    FROM DEV 
+    WHERE ID_DEV = p_id_dev;
+
+    IF v_linguagem = 'PHP' THEN 
+        SELECT 'Bloqueado : Desenvolvedor PHP nao pode assumir novos projetos' AS STATUS_OPERACAO;
+    ELSE
+        INSERT INTO PROJETO(NOME_PROJETO, VALOR_ORCAMENTO, ID_DEV)
+        VALUES  (p_nome_projeto, p_valor, p_id_dev);
+
+        SELECT 'Sucesso : Projeto vinculado com sucesso' AS STATUS_OPERACAO;
+    END IF;
+END //
+DELIMITER;
+
+CALL VincularDevProjeto('Sistema novo', 3000.00, 1);
+CALL VincularDevProjeto('Sistema novo', 3000.00, 2);
+
+
+DELIMITER //
+    CREATE PROCEDURE VerificaCompatibilidadeDevs(
+        IN id_dev_1 INT,
+        IN id_dev_2 INT
+    )
+BEGIN
+    DECLARE v_ling_1 VARCHAR(200);
+    DECLARE v_ling_2 VARCHAR(200);
+
+    SELECT LINGUAGEM INTO v_ling_1 
+    FROM DEV
+    WHERE ID_DEV = id_dev_1; 
+
+    SELECT LINGUAGEM INTO v_ling_2 
+    FROM DEV
+    WHERE ID_DEV = id_dev_2; 
+
+    IF v_ling_1 = v_ling_2 THEN
+        SELECT 'Compativeis : os desenvolvedores trabalham com a mesma linguagem';
+    ELSE
+        SELECT 'Incompativeis : os desenvolvedores não trabalham com a mesma linguagem';
+    END IF;
+        
+END//
+DELIMITER;
+
+CALL VerificaCompatibilidadeDevs(1, 2);
