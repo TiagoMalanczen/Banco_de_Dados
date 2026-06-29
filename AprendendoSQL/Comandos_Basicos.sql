@@ -210,5 +210,73 @@ BEGIN
         
 END//
 DELIMITER;
-
 CALL VerificaCompatibilidadeDevs(1, 2);
+
+
+DELIMITER // 
+CREATE PROCEDURE ReajusteOrcamentoProjeto()
+BEGIN
+    DECLARE v_id_projeto INT;
+    DECLARE v_orcamento DECIMAL(10,2);
+    DECLARE v_fim INT DEFAULT FALSE;
+
+    DECLARE cur_projetos CURSOR FOR
+        SELECT ID_PROJETO, VALOR_ORCAMENTO FROM PROJETO;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET v_fim = TRUE;
+
+    OPEN cur_projetos;
+    meu_loop : LOOP
+        FETCH cur_projetos INTO v_id_projeto, v_orcamento;
+
+        IF v_fim THEN 
+            LEAVE meu_loop;
+        END IF;
+
+        IF v_orcamento < 5000 THEN
+            UPDATE PROJETO
+            SET VALOR_ORCAMENTO = v_orcamento * 1.10 
+            WHERE ID_PROJETO = v_id_projeto;
+        END IF;
+    END LOOP meu_loop;
+
+    CLOSE  cur_projetos;
+END//
+DELIMITER ;
+
+SELECT *FROM PROJETO;
+CALL ReajusteOrcamentoProjeto();
+
+
+DELIMITER //
+CREATE PROCEDURE ListaLinguagensDev()
+BEGIN
+    DECLARE v_fim INT DEFAULT FALSE;
+    DECLARE id_dev INT;
+    DECLARE linguagem VARCHAR(200);
+
+    DECLARE cur_linguagem CURSOR FOR SELECT
+    ID_DEV, LINGUAGEM FROM DEV;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET v_fim = TRUE;
+
+    OPEN cur_linguagem;
+
+        meu_loop : LOOP
+            FETCH cur_linguagem INTO id_dev, linguagem;
+        IF V_fim THEN
+            LEAVE meu_loop;
+        END IF;
+        
+        IF linguagem = 'JavaScript' THEN
+            UPDATE DEV 
+            SET LINGUAGEM = 'TypeScript'
+            WHERE ID_DEV = id_dev;
+        END IF;
+        END LOOP meu_loop;
+    CLOSE cur_linguagem;
+END //
+DELIMITER;
+
+SHOW TABLES;
+USE APRENDENDO_SQL;
